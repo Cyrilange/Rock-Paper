@@ -2,48 +2,41 @@ const computerChoiceDisplay = document.getElementById("computer-choice");
 const userChoiceDisplay = document.getElementById("user-choice");
 const resultDisplay = document.getElementById("result");
 
-//choice
+const choices = document.querySelectorAll(".button"); // Use class selector for buttons
 
-const choices = document.querySelectorAll("button");
-
-let userChoice = "";
-let computerChoice = "";
-let result = ";";
-
-choices.forEach((choice) =>
+choices.forEach((choice) => {
   choice.addEventListener("click", (e) => {
-    userChoice = e.target.id;
-    userChoiceDisplay.innerHTML = userChoice;
-    generateChoiceCumputer();
-    determineWinner();
-  })
-);
+    const userChoice = e.currentTarget.id; // Use currentTarget to get the clicked button
+    userChoiceDisplay.textContent = userChoice; // Update the user choice display
 
-function generateChoiceCumputer() {
-  const random = Math.floor(Math.random() * choices.length);
+    const computerChoice = generateChoiceComputer();
+    computerChoiceDisplay.textContent = computerChoice; // Update the computer choice display
 
+    determineWinner(userChoice, computerChoice); // Determine the winner
+  });
+});
+
+function generateChoiceComputer() {
+  const random = Math.floor(Math.random() * 3);
   if (random === 0) {
-    computerChoice = "rock";
+    return "rock";
   } else if (random === 1) {
-    computerChoice = "paper";
-  } else if (random === 2) {
-    computerChoice = "scissors";
+    return "paper";
+  } else {
+    return "scissors";
   }
-  computerChoiceDisplay.innerHTML = computerChoice;
 }
 
-function determineWinner() {
+function determineWinner(userChoice, computerChoice) {
   if (userChoice === computerChoice) {
-    result = "Vous êtes à égalité!";
+    resultDisplay.textContent = "Vous êtes à égalité!";
   } else if (
     (userChoice === "rock" && computerChoice === "scissors") ||
     (userChoice === "paper" && computerChoice === "rock") ||
     (userChoice === "scissors" && computerChoice === "paper")
   ) {
-    result = "Félicitations, vous avez gagné cette manche!";
+    resultDisplay.textContent = "Félicitations, vous avez gagné cette manche!";
   } else {
-    result = "Ouch, vous avez perdu cette manche!";
+    resultDisplay.textContent = "Ouch, vous avez perdu cette manche!";
   }
-
-  resultDisplay.innerHTML = result;
 }
